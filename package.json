@@ -2,14 +2,13 @@
   "name": "gestion_familiares",
   "version": "1.0.0",
   "main": "index.js",
-
-    "scripts": {
-  "test": "jest --runInBand",
-  "lint": "eslint ."
-},
-"jest": {
-  "testEnvironment": "node"
-},
+  "scripts": {
+    "test": "jest --runInBand",
+    "lint": "eslint ."
+  },
+  "jest": {
+    "testEnvironment": "node"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
