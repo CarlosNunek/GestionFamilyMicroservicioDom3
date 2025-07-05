@@ -2,25 +2,29 @@ const request = require('supertest');
 const express = require('express');
 const bodyParser = require('express').json;
 
-const {
-  setListaOficial
-} = require('../services/familiarService');
-const familiarRoutes = require('../controllers/familiarController');
+jest.mock('../services/familiarService', () => {
+  let lista = [];
 
-// Crear app simulada
+  return {
+    setListaOficial: (nuevaLista) => { lista = nuevaLista; },
+    buscarFamiliar: (id_cedula) => lista.find(f => f.id_cedula === id_cedula),
+    validarFamiliar: jest.fn(),
+    guardarFamiliarEnRedis: jest.fn()
+  };
+});
+
+const familiarRoutes = require('../controllers/familiarController');
+const { setListaOficial } = require('../services/familiarService');
+
+// Crear app falsa
 const app = express();
 app.use(bodyParser());
 app.get('/api/familiares/validar/:id_cedula', familiarRoutes.validarFamiliarPorCedula);
 
 describe('Validación de cédula de familiar', () => {
   beforeAll(() => {
-    // Cargar datos de prueba en la lista oficial
     setListaOficial([
-      {
-        id_cedula: '1725279812',
-        nombre: 'Juan Perez',
-        parentesco: 'padre'
-      }
+      { id_cedula: '1725279812', nombre: 'Juan Perez', parentesco: 'padre' }
     ]);
   });
 
@@ -33,7 +37,9 @@ describe('Validación de cédula de familiar', () => {
   test('Debe retornar 404 si la cédula no está en la lista', async () => {
     const res = await request(app).get('/api/familiares/validar/9999999999');
     expect(res.statusCode).toBe(404);
-    expect(res.body).toEqual({ mensaje: 'Familiar no encontrado o no asociado a ningún recluso.' });
+    expect(res.body).toEqual({
+      mensaje: 'Familiar no encontrado o no asociado a ningún recluso.'
+    });
   });
 
   afterAll((done) => {
