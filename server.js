@@ -18,3 +18,4 @@ const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`[✓] Microservicio de Gestión de Familiares corriendo en puerto ${PORT}`);
 });
+module.exports = app;
