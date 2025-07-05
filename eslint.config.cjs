@@ -2,7 +2,7 @@ const json = require('@eslint/json');
 
 module.exports = [
   {
-    ignores: ['**/*.test.js', 'node_modules/**'],
+    ignores: ['**/*.test.js', 'node_modules/**', "package.json", "package-lock.json"],
   },
   {
     files: ['**/*.js'],
