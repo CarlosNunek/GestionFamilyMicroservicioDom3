@@ -1,21 +1,10 @@
 const request = require('supertest');
-const express = require('express');
-const bodyParser = require('express').json;
+const app = require('../server'); // Usa tu server real
 
-const {
-  setListaOficial
-} = require('../services/familiarService');
-const familiarRoutes = require('../controllers/familiarController');
-
-// Simular servidor con solo los endpoints necesarios
-const app = express();
-app.use(bodyParser());
-
-app.get('/api/familiares/validar/:id_cedula', familiarRoutes.validarFamiliarPorCedula);
+const { setListaOficial } = require('../services/familiarService');
 
 describe('Validación de cédula de familiar', () => {
   beforeAll(() => {
-    // Cargar una lista simulada de familiares
     setListaOficial([
       {
         id_cedula: '1725279812',
